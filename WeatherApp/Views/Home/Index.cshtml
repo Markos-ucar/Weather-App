@@ -1,0 +1,59 @@
+﻿@model WeatherModel;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="d-flex justify-content-center align-content-center">
+                
+            </div>
+           
+            <label class="text-decoration-underline text-center">Enter a Location name to get the weather details:</label>
+            <form asp-controller="Home" asp-action="GetWeatherDetails" method="post">
+                <div class="form-group">
+                    <input class="form-control" type="text" name="location" required placeholder="Name of Location" />
+                </div>
+                <div class="form-group text-center">
+                    <button class="btn btn-primary m-4" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<br />
+
+@if (Model != null && Model.location != null && Model.current != null && Model.current.Condition != null)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-decoration-underline">Weather Details</h5>
+                        <div class="mb-3"><strong>City:</strong> @Model.location.name</div>
+                        <div class="mb-3"><strong>Country:</strong> @Model.location.region, @Model.location.country</div>
+                        <div class="mb-3"><strong>Time:</strong> @Model.location.localtime</div>
+                        <div class="mb-3"><strong>Temperature in Celsius:</strong> @Model.current.temp_c °C</div>
+                        <div class="mb-3"><strong>Temperature in Fahrenheit:</strong> @Model.current.temp_f °F</div>
+                        <div class="mb-3"><strong>Weather Description:</strong> @Model.current.Condition.text</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (ViewData.ContainsKey("IsFormSubmitted") && (bool)ViewData["IsFormSubmitted"])
+{
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="alert alert-info" role="alert">
+                    @ViewData["Message"]
+                </div>
+            </div>
+        </div>
+    </div>
+}
